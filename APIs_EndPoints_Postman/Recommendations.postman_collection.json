@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "c84dbf27-6d2e-40bd-b1d9-27b3490dad59",
+		"name": "Recommendations",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "43889421",
+		"_collection_link": "https://mohamed-4765290.postman.co/workspace/testing~84ec75d8-9d42-4d0a-9a62-e6ad913c02a5/collection/43889421-c84dbf27-6d2e-40bd-b1d9-27b3490dad59?action=share&source=collection_link&creator=43889421"
+	},
+	"item": [
+		{
+			"name": "Recommendations",
+			"item": [
+				{
+					"name": "create-recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtb2hhbWVkc2F5ZWRzaGFhYmFuMjAyMkBnbWFpbC5jb20iLCJpYXQiOjE3NjEzNTQ0MDYsImV4cCI6MTc2MTQwODQwNn0.17O1Si5dYYVy4r81WWqYvyOGJJn0cGg_jJVVKnPwflTvYYpBJZgmGUIgDiQ9gGlC"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Thought process book will fill the gap between the educational and practical work\",\r\n    \"type_id\": 2,\r\n    \"cat_id\": 102\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/recommendation",
+						"description": "- this endpoint to post a recommendation\n    \n- you have to be loged in"
+					},
+					"response": []
+				},
+				{
+					"name": "get-recommendations",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:8080/api/v1/recommendation",
+						"description": "- this endpoint to get all the recommendations with pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "get-recommendation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/recommendation/1",
+						"description": "- get a particular recommendation by it's id"
+					},
+					"response": []
+				},
+				{
+					"name": "update-recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtb2hhbWVkc2F5ZWRzaGFhYmFuMjAyMkBnbWFpbC5jb20iLCJpYXQiOjE3NjE0MTA0MjgsImV4cCI6MTc2MTQ2NDQyOH0.-nE4KfvxxvPchb_sAZz9BAQtakIUoGmj93hdsttpbApZZmbqx8GyJVGASfCIe5v3"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Thought6 process book will fill the gap between the educational and practical work\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/recommendation/1",
+						"description": "- update your recommendation\n    \n- you have to be the owner and loged in to make this action"
+					},
+					"response": []
+				},
+				{
+					"name": "delete-recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtb2hhbWVkc2F5ZWRzaGFhYmFuMjAyMkBnbWFpbC5jb20iLCJpYXQiOjE3NjEzNTQ0MDYsImV4cCI6MTc2MTQwODQwNn0.17O1Si5dYYVy4r81WWqYvyOGJJn0cGg_jJVVKnPwflTvYYpBJZgmGUIgDiQ9gGlC"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/recommendation/2",
+						"description": "- delete a recommendation\n    \n- you have to be the owner of the recommendation and also you must be loged in"
+					},
+					"response": []
+				},
+				{
+					"name": "rating-recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtb2hhbWVkc2F5ZWRzaGFhYmFuMjAyM0BnbWFpbC5jb20iLCJpYXQiOjE3NjEzOTg0MzYsImV4cCI6MTc2MTQ1MjQzNn0.f8q7IjUM_wOFGxVqR_V_WUgCbC4_swhyp3Y4zs1nK1WLLFDMxpW8vNRj5Kju0W8J"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stars\":4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/recommendation/1/rating",
+						"description": "- rating a particular recommendation based on either is correct or not"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mohamedsayedshaaban2022@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/auth/login",
+						"description": "- login endpoint to be authenticated\n    \n- must you be registered first"
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"aliklay\",\r\n    \"email\": \"mohamedsayedshaaban2023@gmail.com\",\r\n    \"password\" : \"123456\",\r\n    \"jobTitle\" : \"Software engineer\",\r\n    \"linkedinProfile\" : \"https://www.linkedin.com/in/mohammed-shaaban-573038254/\",\r\n    \"yearsOfExperience\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/auth/register",
+						"description": "- create an account"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:8080/api/v1/category",
+						"description": "- get all the available categories"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Type",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/type",
+						"description": "- get all available types"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://template.postman-echo.com"
+		}
+	]
+}
