@@ -21,6 +21,9 @@ public class AIScoreController {
     @Autowired
     RecommendationService recommendationService;
 
+    @Autowired
+    private MemcachedClient memcachedClient;
+
     @GetMapping("/{id}")
     public ResponseEntity<?> GetRecommendationAIScore(@PathVariable Integer id){
 
@@ -28,11 +31,25 @@ public class AIScoreController {
             //get the required recommendation
             RecommendationsResponse recommendation = recommendationService.getRecommendationById(id);
 
-            //get the content of the recommendation
-            String content = recommendation.getDescription();
+            //build the key
+            String cacheKey = "ai_score_" + id;
 
-            //get the score of the AI for that recommendation
-            Integer AIScoreResponse = aiScoreService.getRecommendationAIScore(content);
+            //check if it exists or not
+
+            Integer AIScoreResponse = (Integer) memcachedClient.get(cacheKey);
+
+            if(AIScoreResponse == null) {
+
+                //get the content of the recommendation
+                String content = recommendation.getDescription();
+
+                //get the score of the AI for that recommendation
+                AIScoreResponse = aiScoreService.getRecommendationAIScore(content);
+
+                // store in cache for 12 hour (43200 seconds)
+                memcachedClient.set(cacheKey, 43200, AIScoreResponse);
+
+            }
 
             //return the AI response
             return ResponseEntity.ok(AIScoreResponse);
