@@ -35,10 +35,9 @@ public class AIScoreController {
             String cacheKey = "ai_score_" + id;
 
             //check if it exists or not
-
             Integer AIScoreResponse = (Integer) memcachedClient.get(cacheKey);
 
-            if(AIScoreResponse == null) {
+            if(AIScoreResponse == null) { //not exists in the cache
 
                 //get the content of the recommendation
                 String content = recommendation.getDescription();
