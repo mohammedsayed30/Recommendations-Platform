@@ -1,9 +1,12 @@
 package recommendations.config;
 
-import org.springframework.context.annotation.Bean;
-
+import net.spy.memcached.MemcachedClient;
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class MemcachedConfig {
 
     @Bean

@@ -37,7 +37,7 @@ public class AIScoreController {
             //check if it exists or not
             Integer AIScoreResponse = (Integer) memcachedClient.get(cacheKey);
 
-            if(AIScoreResponse == null) { //not exists in the cache
+            if(AIScoreResponse == null) {       //not exists in the cache
 
                 //get the content of the recommendation
                 String content = recommendation.getDescription();
