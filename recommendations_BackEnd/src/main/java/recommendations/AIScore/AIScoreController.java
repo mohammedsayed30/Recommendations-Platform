@@ -2,6 +2,7 @@ package recommendations.AIScore;
 
 
 import lombok.extern.slf4j.Slf4j;
+import net.spy.memcached.MemcachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class AIScoreController {
 
             if(AIScoreResponse == null) {       //not exists in the cache
 
+                log.info("CACHE MISS — calling AI service for id: {}", id);
                 //get the content of the recommendation
                 String content = recommendation.getDescription();
 
@@ -48,6 +50,8 @@ public class AIScoreController {
                 // store in cache for 12 hour (43200 seconds)
                 memcachedClient.set(cacheKey, 43200, AIScoreResponse);
 
+            }else{
+                log.info("CACHE HIT — returning cached value for id: {}", id);
             }
 
             //return the AI response
