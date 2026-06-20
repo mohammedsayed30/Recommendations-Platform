@@ -1,9 +1,17 @@
 package recommendations.user;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class UserValidationTest {
     //to check the rules
@@ -25,5 +33,20 @@ public class UserValidationTest {
         user.setYearsOfExperience(5);
         return user;
     }
+
+    //
+    @Test
+    @DisplayName("TC_01: Validate user has zero violations")
+    public void validateUserHasZeroViolations(){
+        //build valid user
+        User user = buildValidateUser();
+
+        //get the violdations if there is existing
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        //check there is no violations
+        assertTrue(violations.isEmpty());
+    }
+
 
 }
