@@ -49,6 +49,7 @@ public class UserValidationTest {
         assertTrue(violations.isEmpty());
     }
 
+    //ensure that user enter his full name
     @Test
     @DisplayName("TC_02: Missing Full Name Should Fail the test")
     public void missingFullNameShouldFailTheRegisteration(){
@@ -62,7 +63,72 @@ public class UserValidationTest {
 
         //check there is no violations
         assertFalse(violations.isEmpty());
+
+        //check if the violation come from full name
+        assertTrue(violations
+                .stream()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("fullName"))
+        );
     }
+
+    //ensure that user enter valid mail
+    @Test
+    @DisplayName("TC_03: InValid Email Should Fail the test")
+    public void nonValidEmailShouldFailTheRegisteration(){
+        //build valid user
+        User user = buildValidUser();
+
+        user.setEmail("not-an-email");
+
+        //get the violdations if there is existing
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        //check there is no violations
+        assertFalse(violations.isEmpty());
+
+        //check if the violation come from Email
+        assertTrue(violations
+                .stream()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("email"))
+        );
+    }
+
+    //validate that password has at least  6 characters
+    @Test
+    @DisplayName("TC_04")
+    public void shortPasswordShouldTrigerViolation(){
+        User user = buildValidUser();
+
+        user.setPassword("12345");
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty());
+
+        assertTrue(violations
+                .stream()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("password"))
+        );
+    }
+
+    //validate that password has at least  6 characters
+    @Test
+    @DisplayName("TC_05: Negative yearsOfExperience currently PASSES")
+    public void nigativeYOFShouldTrigerViolation(){
+        User user = buildValidUser();
+
+        user.setYearsOfExperience(-2);
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty());
+
+        assertTrue(violations
+                .stream()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("yearsOfExperience"))
+        );
+    }
+
 
 
 
