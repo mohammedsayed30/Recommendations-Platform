@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -23,7 +24,7 @@ public class UserValidationTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    private User buildValidateUser(){
+    private User buildValidUser(){
         User user = new User();
         user.setFullName("aliklay");
         user.setEmail("mohamedsayedshaaban2023@gmail.com");
@@ -34,12 +35,12 @@ public class UserValidationTest {
         return user;
     }
 
-    //
+    //user should has no violations
     @Test
     @DisplayName("TC_01: Validate user has zero violations")
     public void validateUserHasZeroViolations(){
         //build valid user
-        User user = buildValidateUser();
+        User user = buildValidUser();
 
         //get the violdations if there is existing
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -47,6 +48,22 @@ public class UserValidationTest {
         //check there is no violations
         assertTrue(violations.isEmpty());
     }
+
+    @Test
+    @DisplayName("TC_02: Missing Full Name Should Fail the test")
+    public void missingFullNameShouldFailTheRegisteration(){
+        //build valid user
+        User user = buildValidUser();
+
+        user.setFullName("");
+
+        //get the violdations if there is existing
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        //check there is no violations
+        assertFalse(violations.isEmpty());
+    }
+
 
 
 }
