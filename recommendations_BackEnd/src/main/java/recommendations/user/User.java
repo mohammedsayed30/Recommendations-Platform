@@ -5,10 +5,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -73,6 +70,7 @@ public class User implements UserDetails {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Years of experience is mandatory")
+    @Positive(message = "Years of experience must be a positive number")
 	private Integer yearsOfExperience;
 	
 	 // One user can have many recommendations
