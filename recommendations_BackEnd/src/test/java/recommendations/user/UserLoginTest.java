@@ -49,7 +49,7 @@ public class UserLoginTest {
                 .content("""
                         {
                         "email": "test@example.com",
-                        "password": "123456",
+                        "password": "123456"
                         }
                         """))
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class UserLoginTest {
                         .content("""
                         {
                         "email": "tes@example.com",
-                        "password": "123456",
+                        "password": "123456"
                         }
                         """))
                 .andExpect(status().isForbidden());
@@ -114,7 +114,7 @@ public class UserLoginTest {
                         .content("""
                         {
                         "email": "test@example.com",
-                        "password": "12345",
+                        "password": "12345"
                         }
                         """))
                 .andExpect(status().isInternalServerError());
