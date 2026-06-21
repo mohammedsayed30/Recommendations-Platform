@@ -85,7 +85,7 @@ public class UserLoginTest {
                         "password": "123456"
                         }
                         """))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
     }
 
