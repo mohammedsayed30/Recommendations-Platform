@@ -1,6 +1,7 @@
 package recommendations.user;
 
 import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 import recommendations.config.JwtService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -35,6 +37,11 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(userService, "validator", validator);
+    }
 
     private User buildValidUser(){
         User user = new User();
