@@ -278,14 +278,6 @@ public class RecommendationServiceTest {
         //return fake user for isolation
         Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
 
-        //return fake category for isolation
-        Mockito.when(categoryService.getCategory(Mockito.anyInt())).thenReturn(category);
-
-        //return fake type for isolation
-        Mockito.when(typeService.getType(Mockito.anyInt())).thenReturn(type);
-
-        //return fake recommendation when recommendation  got save it
-        Mockito.when(recommendationRepository.save(Mockito.any())).thenReturn(recommendationRes);
 
         assertThrows(IllegalArgumentException.class, () -> {
             recommendationService.create(recommendation,"anythingstring");
