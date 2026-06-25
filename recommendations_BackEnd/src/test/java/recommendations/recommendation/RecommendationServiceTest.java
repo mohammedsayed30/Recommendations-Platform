@@ -250,4 +250,44 @@ public class RecommendationServiceTest {
         assertEquals("DSA the most important thing in software engineer",result.getDescription());
     }
 
+    @Test
+    @DisplayName("TC_07 : should throw  an error due to the empty description")
+    public void saveRecommendation_ShouldThrowAnErrorDueToEmptyDescription() {
+        //create the recommendation object
+        RecommendationRequest recommendation = createRecommendationRequestObject();
+
+        recommendation.setDescription("");
+
+        //create the fake user
+        User user = createValidUser();
+        //create the fake category
+        Category category = createCategoryObject();
+        //create the fake type
+        Type type =  createTypeObject();
+
+        //create the recommendation
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
+
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
+
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
+
+        //return fake category for isolation
+        Mockito.when(categoryService.getCategory(Mockito.anyInt())).thenReturn(category);
+
+        //return fake type for isolation
+        Mockito.when(typeService.getType(Mockito.anyInt())).thenReturn(type);
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.save(Mockito.any())).thenReturn(recommendationRes);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            recommendationService.create(recommendation,"anythingstring");
+        });
+    }
+
 }
