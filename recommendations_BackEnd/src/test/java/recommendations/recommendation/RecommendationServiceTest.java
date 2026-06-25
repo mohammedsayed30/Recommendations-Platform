@@ -119,8 +119,9 @@ public class RecommendationServiceTest {
         int id = 0;  //id that will never exist
 
         Mockito.when(recommendationRepository.findRecommendationDetailsById(Mockito.anyInt()))
-                .thenReturn(new RuntimeException());
+                .thenReturn(Optional.empty());
 
+        //throw a runtime exception if the recommendation not found
         assertThrows(RuntimeException.class, () -> {
             recommendationService.getRecommendationById(id);
         });
