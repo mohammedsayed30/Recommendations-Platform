@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import recommendations.recommendation.dto.RecommendationsResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -93,5 +94,23 @@ public class RecommendationServiceTest {
         });
 
     }
+
+    @Test
+    @DisplayName("TC_04 : Should return recommendation")
+    public void getRecommendationById_ShouldReturnRecommendation() {
+
+        RecommendationsResponse recommendation = createRecommendationResponseObject();
+
+        Mockito.when(recommendationRepository.findRecommendationDetailsById(Mockito.anyInt()))
+                        .thenReturn(Optional.ofNullable(recommendation));
+
+        RecommendationsResponse result= recommendationService.getRecommendationById(1);
+
+        assertEquals("klay",result.getUserFullName());
+        assertEquals(1,result.getRecommendationId());
+
+    }
+
+
 
 }
