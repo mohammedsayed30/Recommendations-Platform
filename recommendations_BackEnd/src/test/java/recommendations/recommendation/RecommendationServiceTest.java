@@ -212,7 +212,7 @@ public class RecommendationServiceTest {
     }
 
     @Test
-    @DisplayName("TC_06 : should save recommendation into the database without any errors")
+    @DisplayName("TC_06 : should build and return the recommendation with correct user and description")
     public void saveRecommendation_ShouldSaveTheRecommendationToDB() {
         //create the recommendation object
         RecommendationRequest recommendation = createRecommendationRequestObject();
