@@ -112,5 +112,20 @@ public class RecommendationServiceTest {
     }
 
 
+    @Test
+    @DisplayName("TC_05 : Should return RuntimeException if not found")
+    public void getRecommendationById_ShouldReturnRuntimeException() {
+
+        int id = 0;  //id that will never exist
+
+        Mockito.when(recommendationRepository.findRecommendationDetailsById(Mockito.anyInt()))
+                .thenReturn(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> {
+            recommendationService.getRecommendationById(id);
+        });
+
+
+    }
 
 }
