@@ -67,8 +67,7 @@ public class RecommendationService {
     	String jwtToken = JwtToken.replace("Bearer ", "").trim();
         // Extract email from JWT token
         String userEmail = jwtService.extractUsername(jwtToken);
-        System.out.println(jwtToken);
-        System.out.println(userEmail);
+
         // Find the user by email
         User user = (User) userService.loadUserByUsername(userEmail);
           

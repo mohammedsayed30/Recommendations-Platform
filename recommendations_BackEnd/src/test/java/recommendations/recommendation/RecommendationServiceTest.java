@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import recommendations.recommendation.dto.RecommendationRequest;
 import recommendations.recommendation.dto.RecommendationsResponse;
 
 import java.util.List;
@@ -30,6 +31,20 @@ public class RecommendationServiceTest {
     RecommendationRepository recommendationRepository;
 
 
+    //create recommendation request object
+    public RecommendationRequest createRecommendationRequestObject()
+    {
+        RecommendationRequest recommendationMock = new RecommendationRequest();
+
+        recommendationMock.setDescription("DDA is the most powerful book for software engineering");
+        recommendationMock.setCat_id(10);
+        recommendationMock.setType_id(3);
+
+        return  recommendationMock;
+
+    }
+
+    //create recommendation response object
     public RecommendationsResponse createRecommendationResponseObject()
     {
         RecommendationsResponse recommendationMock = new RecommendationsResponse();
@@ -125,6 +140,15 @@ public class RecommendationServiceTest {
         assertThrows(RuntimeException.class, () -> {
             recommendationService.getRecommendationById(id);
         });
+
+
+    }
+
+    @Test
+    @DisplayName("TC_06 : should save recommendation into the database without any errors")
+    public void saveRecommendation_ShouldSaveTheRecommendationToDB() {
+
+
 
 
     }
