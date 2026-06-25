@@ -1,6 +1,7 @@
 package recommendations.recommendation;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,6 +17,7 @@ import recommendations.recommendation.dto.RecommendationsResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class RecommendationServiceTest {
@@ -46,6 +48,7 @@ public class RecommendationServiceTest {
     }
 
     @Test
+    @DisplayName("TC_01 : Should return the paginated recommendations")
     public void getAllRecommendations_ShouldReturnRecommendations(){
         //pagination setup
         Pageable pageable = PageRequest.of(0, 20);
@@ -70,4 +73,25 @@ public class RecommendationServiceTest {
         assertEquals(1,result.getTotalElements());
 
     }
+
+    @Test
+    @DisplayName("TC_02 : Should throw an exception for nagative page number")
+    public void getAllRecommendations_ShouldThrowPageIsNagativeException() {
+
+       assertThrows(IllegalArgumentException.class, () -> {
+                 recommendationService.getAllRecommendations(-1,20);
+       });
+
+    }
+
+    @Test
+    @DisplayName("TC_03 : Should throw an exception for nagative size number")
+    public void getAllRecommendations_ShouldThrowSizeIsZeroOrNagativeException() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            recommendationService.getAllRecommendations(1,-20);
+        });
+
+    }
+
 }
