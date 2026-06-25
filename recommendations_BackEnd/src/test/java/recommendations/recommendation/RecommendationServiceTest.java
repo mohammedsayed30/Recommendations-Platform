@@ -1,11 +1,21 @@
 package recommendations.recommendation;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import recommendations.recommendation.dto.RecommendationsResponse;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class RecommendationServiceTest {
@@ -17,7 +27,7 @@ public class RecommendationServiceTest {
     RecommendationRepository recommendationRepository;
 
 
-    public RecommendationsResponse setUp()
+    public RecommendationsResponse createRecommendationResponseObject()
     {
         RecommendationsResponse recommendationMock = new RecommendationsResponse();
 
@@ -35,7 +45,29 @@ public class RecommendationServiceTest {
 
     }
 
+    @Test
     public void getAllRecommendations_ShouldReturnRecommendations(){
+        //pagination setup
+        Pageable pageable = PageRequest.of(0, 20);
+
+        //response expectation
+        RecommendationsResponse recommendationMock = createRecommendationResponseObject();
+        List<RecommendationsResponse>  recommendationsMock = List.of(recommendationMock);
+
+        //wrap the response in a page
+        Page<RecommendationsResponse> expectedPage =
+                new PageImpl<>(recommendationsMock, pageable, recommendationsMock.size());
+
+        //mock the repository
+        Mockito.when(recommendationRepository.findAllRecommendationsWithDetails(pageable))
+                .thenReturn(expectedPage);
+
+        //recieve the result from the service
+        Page<RecommendationsResponse> result = recommendationService.getAllRecommendations(0,20);
+
+        //validate the response
+        assertEquals("klay",result.getContent().get(0).getUserFullName());
+        assertEquals(1,result.getTotalElements());
 
     }
 }
