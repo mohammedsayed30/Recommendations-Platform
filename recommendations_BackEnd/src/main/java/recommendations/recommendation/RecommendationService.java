@@ -43,6 +43,9 @@ public class RecommendationService {
     
     //get all the recommendations 
     public Page<RecommendationsResponse> getAllRecommendations(int page,int size) {
+        if(page < 0 || size <= 0 ){
+            throw new IllegalArgumentException("Page and size must be positive values");
+        }
         Pageable pageable = PageRequest.of(page, size); // Fixed at 20 per page
         return recommendationRepository.findAllRecommendationsWithDetails(pageable);
     }
