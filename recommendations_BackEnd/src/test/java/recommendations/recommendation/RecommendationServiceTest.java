@@ -7,14 +7,23 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import recommendations.config.JwtService;
 import recommendations.recommendation.dto.RecommendationRequest;
 import recommendations.recommendation.dto.RecommendationsResponse;
+import recommendations.recommendationCategory.Category;
+import recommendations.recommendationCategory.CategoryService;
+import recommendations.recommendationType.Type;
+import recommendations.recommendationType.TypeService;
+import recommendations.user.User;
+import recommendations.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +39,34 @@ public class RecommendationServiceTest {
     @Mock
     RecommendationRepository recommendationRepository;
 
+    @Mock
+    private CategoryService categoryService;
+    @Mock
+    private TypeService typeService;
+    @Mock
+    private JwtService jwtService;
+    @Mock
+    private UserService userService;
+
+
+    //build valid fake user for simulation
+    private User createValidUser(){
+        User user = new User();
+        user.setFullName("aliklay");
+        user.setEmail("mohamedsayedshaaban2023@gmail.com");
+        user.setPassword("123456");
+        user.setJobTitle("Software engineer");
+        user.setLinkedinProfile("https://www.linkedin.com/in/mohammed-shaaban-573038254/");
+        user.setYearsOfExperience(5);
+        return user;
+    }
 
     //create recommendation request object
     public RecommendationRequest createRecommendationRequestObject()
     {
         RecommendationRequest recommendationMock = new RecommendationRequest();
 
-        recommendationMock.setDescription("DDA is the most powerful book for software engineering");
+        recommendationMock.setDescription("DDA book is the most powerful book for software engineering");
         recommendationMock.setCat_id(10);
         recommendationMock.setType_id(3);
 
@@ -60,6 +90,43 @@ public class RecommendationServiceTest {
         recommendationMock.setRating(4.5);
 
         return  recommendationMock;
+
+    }
+
+    public Category createCategoryObject()
+    {
+        Category categoryMock = new Category();
+
+        categoryMock.setId(1);
+        categoryMock.setName("Book");
+
+        return  categoryMock;
+
+    }
+
+    public Type createTypeObject()
+    {
+        Type typeMock = new Type();
+
+        typeMock.setId(1);
+        typeMock.setName("Book");
+
+        return  typeMock;
+
+    }
+
+    public Recommendation createRecommendationWithUserAndCatAndTypeResponseObject()
+    {
+        Recommendation recommendationRes = new Recommendation();
+
+        recommendationRes.setId(1);
+        recommendationRes.setDescription("DSA the most important thing in software engineer");
+        recommendationRes.setUser(createValidUser());
+        recommendationRes.setCategory(createCategoryObject());
+        recommendationRes.setType(createTypeObject());
+        recommendationRes.setRatings(new ArrayList<>());
+
+        return  recommendationRes;
 
     }
 
@@ -147,10 +214,40 @@ public class RecommendationServiceTest {
     @Test
     @DisplayName("TC_06 : should save recommendation into the database without any errors")
     public void saveRecommendation_ShouldSaveTheRecommendationToDB() {
+        //create the recommendation object
+        RecommendationRequest recommendation = createRecommendationRequestObject();
+        //create the fake user
+        User user = createValidUser();
+        //create the fake category
+        Category category = createCategoryObject();
+        //create the fake type
+        Type type =  createTypeObject();
 
+        //create the recommendation
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
 
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
 
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
 
+        //return fake category for isolation
+        Mockito.when(categoryService.getCategory(Mockito.anyInt())).thenReturn(category);
+
+        //return fake type for isolation
+        Mockito.when(typeService.getType(Mockito.anyInt())).thenReturn(type);
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.save(Mockito.any())).thenReturn(recommendationRes);
+
+        //call the actual service
+        Recommendation result= recommendationService.create(recommendation,"anythingstring");
+
+        assertEquals("klay",result.getUser().getFullName());
+        assertEquals("DSA the most important thing in software engineer",result.getDescription());
     }
 
 }
