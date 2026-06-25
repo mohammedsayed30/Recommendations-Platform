@@ -248,6 +248,8 @@ public class RecommendationServiceTest {
 
         assertEquals("aliklay",result.getUser().getFullName());
         assertEquals("DSA the most important thing in software engineer",result.getDescription());
+        assertEquals(category, result.getCategory());
+        assertEquals(type, result.getType());
     }
 
     @Test
