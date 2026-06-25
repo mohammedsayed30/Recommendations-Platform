@@ -246,7 +246,7 @@ public class RecommendationServiceTest {
         //call the actual service
         Recommendation result= recommendationService.create(recommendation,"anythingstring");
 
-        assertEquals("klay",result.getUser().getFullName());
+        assertEquals("aliklay",result.getUser().getFullName());
         assertEquals("DSA the most important thing in software engineer",result.getDescription());
     }
 
