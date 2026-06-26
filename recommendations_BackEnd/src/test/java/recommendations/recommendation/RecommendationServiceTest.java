@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import recommendations.config.JwtService;
 import recommendations.recommendation.dto.RecommendationRequest;
+import recommendations.recommendation.dto.RecommendationUpdateRequest;
+import recommendations.recommendation.dto.RecommendationUpdatedResponse;
 import recommendations.recommendation.dto.RecommendationsResponse;
 import recommendations.recommendationCategory.Category;
 import recommendations.recommendationCategory.CategoryService;
@@ -52,6 +54,7 @@ public class RecommendationServiceTest {
     //build valid fake user for simulation
     private User createValidUser(){
         User user = new User();
+        user.setId(1);
         user.setFullName("aliklay");
         user.setEmail("mohamedsayedshaaban2023@gmail.com");
         user.setPassword("123456");
@@ -67,6 +70,19 @@ public class RecommendationServiceTest {
         RecommendationRequest recommendationMock = new RecommendationRequest();
 
         recommendationMock.setDescription("DDA book is the most powerful book for software engineering");
+        recommendationMock.setCat_id(10);
+        recommendationMock.setType_id(3);
+
+        return  recommendationMock;
+
+    }
+
+    //create recommendation request object
+    public RecommendationUpdateRequest createRecommendationUpdateRequestObject()
+    {
+        RecommendationUpdateRequest recommendationMock = new RecommendationUpdateRequest();
+
+        recommendationMock.setDescription("DDA book is the most powerful book for software engineeringg");
         recommendationMock.setCat_id(10);
         recommendationMock.setType_id(3);
 
@@ -90,6 +106,20 @@ public class RecommendationServiceTest {
         recommendationMock.setRating(4.5);
 
         return  recommendationMock;
+
+    }
+
+    //create recommendation response object
+    public RecommendationUpdatedResponse createRecommendationUpdateResponseObject()
+    {
+        RecommendationUpdatedResponse updatedRecommendationMock = new RecommendationUpdatedResponse();
+
+        updatedRecommendationMock.setId(1);
+        updatedRecommendationMock.setDescription("updated description");
+        updatedRecommendationMock.setCategoryName("advice");
+        updatedRecommendationMock.setTypeName("Software Engineer");
+
+        return  updatedRecommendationMock;
 
     }
 
@@ -118,7 +148,6 @@ public class RecommendationServiceTest {
     public Recommendation createRecommendationWithUserAndCatAndTypeResponseObject()
     {
         Recommendation recommendationRes = new Recommendation();
-
         recommendationRes.setId(1);
         recommendationRes.setDescription("DSA the most important thing in software engineer");
         recommendationRes.setUser(createValidUser());
@@ -213,7 +242,7 @@ public class RecommendationServiceTest {
 
     @Test
     @DisplayName("TC_06 : should build and return the recommendation with correct user and description")
-    public void saveRecommendation_ShouldSaveTheRecommendationToDB() {
+    public void saveRecommendation_ShouldSaveTheRecommendation() {
         //create the recommendation object
         RecommendationRequest recommendation = createRecommendationRequestObject();
         //create the fake user
@@ -282,6 +311,49 @@ public class RecommendationServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             recommendationService.create(recommendation,"anythingstring");
         });
+    }
+
+    @Test
+    @DisplayName("TC_08 : should update and return the recommendation with correct user and description")
+    public void updateRecommendation_ShouldUpdateTheRecommendation() {
+        //create the recommendation object
+        RecommendationUpdateRequest recommendation = createRecommendationUpdateRequestObject();
+        //create the fake user
+        User user = createValidUser();
+        //create the fake category
+        Category category = createCategoryObject();
+        //create the fake type
+        Type type =  createTypeObject();
+
+        //create the recommendation
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
+
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
+
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
+
+        //return fake category for isolation
+        Mockito.when(categoryService.getCategory(Mockito.anyInt())).thenReturn(category);
+
+        //return fake type for isolation
+        Mockito.when(typeService.getType(Mockito.anyInt())).thenReturn(type);
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(recommendationRes));
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.save(Mockito.any())).thenReturn(recommendationRes);
+
+        //call the actual service
+        RecommendationUpdatedResponse result= recommendationService.updateRecommendation(recommendation,"anythingstring",1);
+
+        assertEquals("DDA book is the most powerful book for software engineeringg",result.getDescription());
+
+
     }
 
 }
