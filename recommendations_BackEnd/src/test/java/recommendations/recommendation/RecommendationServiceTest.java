@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.server.ResponseStatusException;
 import recommendations.config.JwtService;
 import recommendations.recommendation.dto.RecommendationRequest;
 import recommendations.recommendation.dto.RecommendationUpdateRequest;
@@ -352,6 +353,42 @@ public class RecommendationServiceTest {
         RecommendationUpdatedResponse result= recommendationService.updateRecommendation(recommendation,"anythingstring",1);
 
         assertEquals("DDA book is the most powerful book for software engineeringg",result.getDescription());
+
+
+    }
+
+    @Test
+    @DisplayName("TC_08 : should update and return the recommendation with correct user and description")
+    public void updateRecommendation_ShouldReturnResponseStatusExceptionDueToForbiddenAccess() {
+        //create the recommendation object
+        RecommendationUpdateRequest recommendation = createRecommendationUpdateRequestObject();
+        //create the fake user
+        User user = createValidUser();
+        //different  user id to make the request unauthorized
+        user.setId(20);
+
+        //create the recommendation
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
+
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
+
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
+
+
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(recommendationRes));
+
+
+
+
+        assertThrows(ResponseStatusException.class, () -> {
+            recommendationService.updateRecommendation(recommendation,"anythingstring",1);
+        });
 
 
     }
