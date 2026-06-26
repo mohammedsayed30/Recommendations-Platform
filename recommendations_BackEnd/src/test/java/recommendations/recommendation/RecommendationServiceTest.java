@@ -30,8 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class RecommendationServiceTest {
@@ -358,7 +357,7 @@ public class RecommendationServiceTest {
     }
 
     @Test
-    @DisplayName("TC_08 : should update and return the recommendation with correct user and description")
+    @DisplayName("TC_09 : should update and return the recommendation with correct user and description")
     public void updateRecommendation_ShouldReturnResponseStatusExceptionDueToForbiddenAccess() {
         //create the recommendation object
         RecommendationUpdateRequest recommendation = createRecommendationUpdateRequestObject();
@@ -384,12 +383,76 @@ public class RecommendationServiceTest {
         Mockito.when(recommendationRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(recommendationRes));
 
 
-
-
         assertThrows(ResponseStatusException.class, () -> {
             recommendationService.updateRecommendation(recommendation,"anythingstring",1);
         });
 
+
+    }
+
+    @Test
+    @DisplayName("TC_10 : should delete and return nothing")
+    public void deleteRecommendation_ShouldDeleteTheRecommendation() {
+
+        //that should simulate the returned one from DB
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+
+        //create the fake user
+        User user = createValidUser();
+
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
+
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
+
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
+
+
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(recommendationRes));
+
+
+        //pass in case there is no exception got fired
+        assertDoesNotThrow(() -> {
+            recommendationService.deleteRecommendation("anythingstring", 1);
+        });
+
+    }
+
+    @Test
+    @DisplayName("TC_10 : should throw unauthorized Error")
+    public void deleteRecommendation_ShouldThrowUnauthorizedError() {
+
+        //that should simulate the returned one from DB
+        Recommendation recommendationRes = createRecommendationWithUserAndCatAndTypeResponseObject();
+
+        //create the fake user
+        User user = createValidUser();
+
+        user.setId(20); //to make the current user not authorized
+
+        //fake email
+        String userEmail = "mohamedsayedshaaban2022@gmail.com";
+
+        //return fake email for isolation
+        Mockito.when(jwtService.extractUsername(Mockito.anyString())).thenReturn(userEmail);
+
+        //return fake user for isolation
+        Mockito.when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(user);
+
+
+
+        //return fake recommendation when recommendation  got save it
+        Mockito.when(recommendationRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(recommendationRes));
+
+
+        //pass in case there is no exception got fired
+        assertThrows(ResponseStatusException.class, () -> {
+            recommendationService.deleteRecommendation("anythingstring", 1);
+        });
 
     }
 
