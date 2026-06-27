@@ -122,6 +122,18 @@ public class RecommendationControllerTest {
 
     }
 
+    public RecommendationUpdateRequest createRecommendationUpdateRequestObject()
+    {
+        RecommendationUpdateRequest recommendationMock = new RecommendationUpdateRequest();
+
+        recommendationMock.setDescription("DDA book is the most powerful book for software engineeringg");
+        recommendationMock.setCat_id(10);
+        recommendationMock.setType_id(3);
+
+        return  recommendationMock;
+
+    }
+
     private User createValidUser(){
         User user = new User();
         user.setId(1);
@@ -138,7 +150,7 @@ public class RecommendationControllerTest {
     {
         Recommendation recommendationRes = new Recommendation();
         recommendationRes.setId(1);
-        recommendationRes.setDescription("DSA the most important thing in software engineer!");
+        recommendationRes.setDescription("DSA the most important thing in software engineer");
         recommendationRes.setUser(createValidUser());
         recommendationRes.setCategory(createCategoryObject());
         recommendationRes.setType(createTypeObject());
@@ -237,13 +249,30 @@ public class RecommendationControllerTest {
 
 
 
-        mockMvc.perform(put("/api/v1/recommendation")
+        mockMvc.perform(put("/api/v1/recommendation/{id}",1)
                         .header("Authorization", "Bearer faketoken123")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createRecommendationRequestObject())))
+                        .content(objectMapper.writeValueAsString(createRecommendationUpdateRequestObject())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.description").value("DSAl the most important thing in software engineer!"));
+                .andExpect(jsonPath("$.description").value("updated description"));
+
+    }
+
+    @Test
+    @DisplayName("TC_05 : hit the delete recommendation end point")
+    public void deleteRecommendationEndPointTest() throws Exception {
+
+
+        //to isolate service from the test
+        Mockito.doNothing().when(recommendationService)
+                .deleteRecommendation(Mockito.anyString(), Mockito.anyInt());
+
+
+        mockMvc.perform(delete("/api/v1/recommendation/{id}",1)
+                        .header("Authorization", "Bearer faketoken123")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
 
     }
 }
