@@ -22,11 +22,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import recommendations.config.SecurityConfig;
 import recommendations.recommendation.dto.RecommendationRequest;
 import recommendations.recommendation.dto.RecommendationUpdateRequest;
+import recommendations.recommendation.dto.RecommendationUpdatedResponse;
 import recommendations.recommendation.dto.RecommendationsResponse;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.Test;
@@ -106,15 +109,16 @@ public class RecommendationControllerTest {
 
     }
 
-    private RecommendationUpdateRequest createRecommendationUpdateRequestObject()
+    private RecommendationUpdatedResponse createRecommendationUpdateResponseObject()
     {
-        RecommendationUpdateRequest recommendationMock = new RecommendationUpdateRequest();
+        RecommendationUpdatedResponse updatedRecommendationMock = new RecommendationUpdatedResponse();
 
-        recommendationMock.setDescription("DDA book is the most powerful book for software engineeringg");
-        recommendationMock.setCat_id(10);
-        recommendationMock.setType_id(3);
+        updatedRecommendationMock.setId(1);
+        updatedRecommendationMock.setDescription("updated description");
+        updatedRecommendationMock.setCategoryName("advice");
+        updatedRecommendationMock.setTypeName("Software Engineer");
 
-        return  recommendationMock;
+        return  updatedRecommendationMock;
 
     }
 
@@ -134,7 +138,7 @@ public class RecommendationControllerTest {
     {
         Recommendation recommendationRes = new Recommendation();
         recommendationRes.setId(1);
-        recommendationRes.setDescription("DSA the most important thing in software engineer");
+        recommendationRes.setDescription("DSA the most important thing in software engineer!");
         recommendationRes.setUser(createValidUser());
         recommendationRes.setCategory(createCategoryObject());
         recommendationRes.setType(createTypeObject());
@@ -224,7 +228,7 @@ public class RecommendationControllerTest {
     public void updateRecommendationEndPointTest() throws Exception {
 
         //response expectation
-        Recommendation recommendationMock = createRecommendationWithUserAndCatAndTypeResponseObject();
+        RecommendationUpdatedResponse recommendationMock = createRecommendationUpdateResponseObject();
 
 
         //to isolate service from the test
@@ -233,13 +237,13 @@ public class RecommendationControllerTest {
 
 
 
-        mockMvc.perform(post("/api/v1/recommendation")
+        mockMvc.perform(put("/api/v1/recommendation")
                         .header("Authorization", "Bearer faketoken123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRecommendationRequestObject())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.description").value("DSAl the most important thing in software engineer"));
+                .andExpect(jsonPath("$.description").value("DSAl the most important thing in software engineer!"));
 
     }
 }
