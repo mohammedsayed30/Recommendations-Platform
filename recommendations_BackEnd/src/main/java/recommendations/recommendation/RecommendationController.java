@@ -34,6 +34,7 @@ public class RecommendationController {
     public Page<RecommendationsResponse> getAllRecommendations(
            @RequestParam(defaultValue = "0") int page,
            @RequestParam(defaultValue = "20") int size) {
+
            return recommendationService.getAllRecommendations(page, size);
     }
 	
