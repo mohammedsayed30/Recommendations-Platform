@@ -11,7 +11,7 @@ on:
 
 #Jobs
 
-Jobs:
+jobs:
 
   # JOB1: build the system
   build:
