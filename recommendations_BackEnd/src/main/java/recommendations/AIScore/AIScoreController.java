@@ -13,6 +13,8 @@ import recommendations.recommendation.RecommendationService;
 import recommendations.recommendation.dto.RecommendationsResponse;
 
 
+
+
 @RestController
 @RequestMapping("/api/v1/score")
 @Slf4j
@@ -24,6 +26,8 @@ public class AIScoreController {
 
     @Autowired
     private MemcachedClient memcachedClient;
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> GetRecommendationAIScore(@PathVariable Integer id){
@@ -40,7 +44,7 @@ public class AIScoreController {
 
             if(AIScoreResponse == null) {       //not exists in the cache
 
-                log.info("CACHE MISS — calling AI service for id: {}", id);
+                log.info("CACHE MISS —> calling AI service for id: {}", id);
                 //get the content of the recommendation
                 String content = recommendation.getDescription();
 
@@ -51,7 +55,7 @@ public class AIScoreController {
                 memcachedClient.set(cacheKey, 43200, AIScoreResponse);
 
             }else{
-                log.info("CACHE HIT — returning cached value for id: {}", id);
+                log.info("CACHE HIT —> returning cached value for id: {}", id);
             }
 
             //return the AI response
