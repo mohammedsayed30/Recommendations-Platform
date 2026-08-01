@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-    @Around("within(recommendations..) && @within(org.springframework.stereotype.Service)")
+    @Around("@within(org.springframework.stereotype.Service)")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
 
