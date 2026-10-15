@@ -30,7 +30,7 @@ public class JwtService {
 	 //generate token only with the email without any other claims
 	 public String generateToken( UserDetails userDetails) {
 			return  generateToken(new HashMap<> () , userDetails);
-	}
+	 }
 	 
 	 
 	//generate the token with extra tokens

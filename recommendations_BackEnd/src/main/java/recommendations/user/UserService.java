@@ -61,9 +61,9 @@ public class UserService implements UserDetailsService{
 		    user.setPassword(passwordEncoder.encode(user.getPassword()));
 		    //return that saved user 
 	        return userRepo.save(user);
-	 }
+    }
 	
-	 public Map<String, Object> verifyUser(LoginRequest loginRequest) {
+    public Map<String, Object> verifyUser(LoginRequest loginRequest) {
 		 String email = loginRequest.getEmail();
 		 String password = loginRequest.getPassword();
 		 User user = (User) loadUserByUsername(email);
@@ -83,12 +83,12 @@ public class UserService implements UserDetailsService{
 	    response.put("user", user);
 	    
 	    return response;
-	 }
-	 
-	 
-	 @Override
-	 public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return userRepo.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
-	 }
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // TODO Auto-generated method stub
+        return userRepo.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+    }
 }
